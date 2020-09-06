@@ -72,12 +72,16 @@ void take_input() {
 void check_winner() {
     int score = getCurrentScore(board);
     if(score == 10) {
+        clr();
+        show_board();
         active = false;
         printf("\t\t\tGAME OVER!\n\t\t\t\tAI WON! You lost!\n");
         getchar();
         getchar();
         return;
     } else if(score == -10) {
+        clr();
+        show_board();
         active = false;
         printf("\t\t\tGAME OVER!\n\t\t\t\tYOU WON! AI lost!\n");
         getchar();
@@ -118,6 +122,7 @@ void menu() {
     cin >> choice;
     if(choice == 1) {
         active = true;
+        initialize();
         clr();
     } else {
         active = false;
