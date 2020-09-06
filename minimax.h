@@ -1,0 +1,139 @@
+#include "bits/stdc++.h"
+
+using namespace std;
+
+// AI is the maximizing player
+char ai = 'O', player = 'X';
+
+struct Move {
+    int row, col;
+};
+
+int getCurrentScore(char board[3][3]) {
+    for(int row = 0; row < 3; row++) {
+        if(board[row][0] == board[row][1] and board[row][1] == board[row][2]) {
+            if(board[row][1] == ai) return 10;
+            else if(board[row][1] == player) return -10; 
+        }
+    }
+
+    for(int col = 0; col < 3; col++) {
+        if(board[0][col] == board[1][col] and board[1][col] == board[2][col]) {
+            if(board[1][col] == ai) return 10;
+            else if(board[1][col] == player) return -10;
+        }
+    }
+
+    if(board[0][0] == board[1][1] and board[1][1] == board[2][2]) {
+        if(board[1][1] == ai) return 10;
+        else if(board[1][1] == player) return -10;
+    }
+
+    if(board[2][0] == board[1][1] and board[1][1] == board[0][2]) {
+        if(board[1][1] == ai) return 10;
+        else if(board[1][1] == player) return -10;
+    }
+    
+    return 0;
+
+}
+
+bool noMovesLeft(char board[3][3]) {
+    for(int i = 0; i < 3; i++) {
+        for(int j = 0; j < 3; j++) {
+            if(board[i][j] == ' ')
+                return false;
+        }
+    }
+    return true;
+}
+
+int minimax(char board[3][3], bool maximizing) {
+    int currentScore = getCurrentScore(board);
+    if(currentScore == 10 or currentScore == -10)
+        return currentScore;
+    if(noMovesLeft(board))
+        return 0;
+    
+    if(maximizing) {
+        int bestScore = -1000;
+
+        for(int i = 0; i < 3; i++) {
+            for(int j = 0; j < 3; j++) {
+                if(board[i][j] == ' ') {
+                    board[i][j] = ai;
+                    bestScore = max(bestScore, minimax(board, !maximizing));
+                    board[i][j] = ' ';
+                }
+            }
+        }
+
+        return bestScore;
+
+    } else {
+        int bestScore = 1000;
+
+        for(int i = 0; i < 3; i++) {
+            for(int j = 0; j < 3; j++) {
+                if(board[i][j] == ' ') {
+                    board[i][j] = player;
+                    bestScore = min(bestScore, minimax(board, !maximizing));
+                    board[i][j] = ' ';
+                }
+            }
+        }
+
+        return bestScore;
+    }
+}
+
+Move getBestMove(char board[3][3]) {
+    Move bestMove;
+    bestMove.row = bestMove.col = -1;
+    int bestValue = -1000;
+
+    for(int i = 0; i < 3; i++) {
+        for(int j = 0; j < 3; j++) {
+            if(board[i][j] == ' ') {
+                board[i][j] = ai;
+                int moveValue = minimax(board, false);
+
+                if(moveValue > bestValue) {
+                    bestValue = moveValue;
+                    bestMove.row = i;
+                    bestMove.col = j;
+                }
+
+                board[i][j] = ' ';
+            }
+        }
+    }
+    // printf("Value of best move is : %d\n", bestValue);
+
+
+    return bestMove;
+}
+
+pair<int, int> getAiMove(char board[3][3]) {
+    Move optimalMove = getBestMove(board);
+    return {optimalMove.row, optimalMove.col};
+}
+
+/*
+int main() {
+    char board[3][3] = {
+        {'O', 'O', 'X'},
+        {'X', 'X', 'O'},
+        {'O', 'X', ' '}
+    };
+    pair<int, int> aiMove = getAiMove(board);
+    printf("Row: %d\nCol: %d\n", aiMove.first, aiMove.second);
+    board[aiMove.first][aiMove.second] = ai;
+	for(int i = 0; i < 3; i++) {
+		for(int j = 0; j < 3; j++) {
+			printf("%c ", board[i][j]);
+		}
+		cout << endl;
+	}
+}
+*/
