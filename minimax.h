@@ -2,13 +2,16 @@
 
 using namespace std;
 
-// AI is the maximizing player
+// AI is the maximizing player.
+// Player is the minimizing player.
 char ai = 'O', player = 'X';
 
+// Structer to store row and col of a move
 struct Move {
     int row, col;
 };
 
+// Evaluate the current state of the board
 int getCurrentScore(char board[3][3]) {
     for(int row = 0; row < 3; row++) {
         if(board[row][0] == board[row][1] and board[row][1] == board[row][2]) {
@@ -38,6 +41,7 @@ int getCurrentScore(char board[3][3]) {
 
 }
 
+// Check if there is any move left
 bool noMovesLeft(char board[3][3]) {
     for(int i = 0; i < 3; i++) {
         for(int j = 0; j < 3; j++) {
@@ -48,6 +52,7 @@ bool noMovesLeft(char board[3][3]) {
     return true;
 }
 
+// MiniMax algorithm
 int minimax(char board[3][3], bool maximizing) {
     int currentScore = getCurrentScore(board);
     if(currentScore == 10 or currentScore == -10)
