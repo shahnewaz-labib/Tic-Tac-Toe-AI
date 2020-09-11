@@ -13,31 +13,32 @@ struct Move {
 
 // Evaluate the current state of the board
 int getCurrentScore(char board[3][3]) {
+    // check the rows
     for(int row = 0; row < 3; row++) {
         if(board[row][0] == board[row][1] and board[row][1] == board[row][2]) {
             if(board[row][1] == ai) return 10;
             else if(board[row][1] == player) return -10; 
         }
     }
-
+    // check the cols
     for(int col = 0; col < 3; col++) {
         if(board[0][col] == board[1][col] and board[1][col] == board[2][col]) {
             if(board[1][col] == ai) return 10;
             else if(board[1][col] == player) return -10;
         }
     }
-
+    // check the diagonal
     if(board[0][0] == board[1][1] and board[1][1] == board[2][2]) {
         if(board[1][1] == ai) return 10;
         else if(board[1][1] == player) return -10;
     }
-
+    // check the diagonal
     if(board[2][0] == board[1][1] and board[1][1] == board[0][2]) {
         if(board[1][1] == ai) return 10;
         else if(board[1][1] == player) return -10;
     }
     
-    return 0;
+    return 0; // No game determining state yet
 
 }
 
@@ -46,7 +47,7 @@ bool noMovesLeft(char board[3][3]) {
     for(int i = 0; i < 3; i++) {
         for(int j = 0; j < 3; j++) {
             if(board[i][j] == ' ')
-                return false;
+                return false;   // At least  one move is left
         }
     }
     return true;
