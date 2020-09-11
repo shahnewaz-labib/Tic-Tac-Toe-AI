@@ -16,10 +16,12 @@ using namespace std;
 char board[3][3];
 string playerName;
 bool turn = true; // true for HUMAN --> X
-bool active = true;
-bool runGame = true;
+                  // false for AI --> O
+bool active = true; // true means game is running.
+bool runGame = true; // for the main while loop.
 
 void clr() {
+    // Clear the screen.
     #ifdef _WIN32   
         system("cls");  
     #elif __linux__ 
@@ -35,6 +37,7 @@ void show_board() {
     cout << "\t\t\t\t" << "-----" << endl;
     cout << "\t\t\t\t" << board[2][0] << "|" << board[2][1] << "|" << board[2][2] << endl;
     */
+   // Display the board.
     printf("\t\t\tTic Tac Toe\n\n");
     printf("\t\t\t%c | %c | %c\n\t\t\t----------\n\t\t\t%c | %c | %c\n\t\t\t----------\n\t\t\t%c | %c | %c\n", board[0][0], board[0][1], board[0][2], board[1][0], board[1][1], board[1][2], board[2][0], board[2][1], board[2][2]);
     cout << endl << endl;
@@ -42,7 +45,7 @@ void show_board() {
 
 void take_input() {
     if(turn) {
-        // player turn
+        // player turn.
         tryagain:
         printf("\t\t\tEnter Row Play : ");
         int row;
@@ -53,46 +56,49 @@ void take_input() {
 
         if(board[row-1][col-1] != ' ' or !(row >= 1 and row <= 3 and col >= 1 and col <= 3)) {
             printf("\t\t\tInvalid move... Try again!\n");
-            goto tryagain;
+            goto tryagain;  // prompt the user to put valid values.
         }
 
-        board[row-1][col-1] = player;
+        board[row-1][col-1] = player; // player move.
 
-        turn = !turn;        
+        turn = !turn;  // next turn is AI's.
         
     } else {
         // AI turn
         // sleep(5);
-        pair<int, int> aiMove = getAiMove(board);
-        board[aiMove.first][aiMove.second] = ai;
-        turn = !turn;
+        pair<int, int> aiMove = getAiMove(board);   // function call to get the AI's optimal moves.
+        board[aiMove.first][aiMove.second] = ai;    // AI move.
+        turn = !turn;   // next turn is player's.
     }
 }
 
 void check_winner() {
-    int score = getCurrentScore(board);
+    int score = getCurrentScore(board); // evaluating the current state of the game.
     if(score == 10) {
-        clr();
-        show_board();
-        active = false;
+        // Game is over. 10 means AI has won, as AI is the maximizing player.
+        clr();  // Clear screen.
+        show_board();   // Show the current state of the game.
+        active = false; // Game is now inactive.
         printf("\t\t\tGAME OVER!\n\t\t\t\tAI WON! You lost!\n");
         getchar();
         getchar();
         return;
     } else if(score == -10) {
-        clr();
-        show_board();
-        active = false;
+        // Game is over. -10 means player has won at this point, as player is the minimizing player.
+        clr();  // Clear screen.
+        show_board();   // Show the current state of the game.
+        active = false; // Game is now inactive.
         printf("\t\t\tGAME OVER!\n\t\t\t\tYOU WON! AI lost!\n");
         getchar();
         getchar();
         return;
     }
-    if(noMovesLeft(board)) {
-        active = false;
+    if(noMovesLeft(board)) { // No moves left and nobody won. So this is a Tie state.
+        active = false; // Game is now inactive.
         printf("\t\t\tGAME OVER!\n\t\t\t\tIt's a TIE!\n");
         getchar();
         getchar();
+        return;
     }
     
     return;
@@ -100,33 +106,33 @@ void check_winner() {
 
 
 void play() {
-    show_board();
-    take_input();
-    check_winner();
+    show_board();   // Show the board.
+    take_input();   // Take moves from player or AI.
+    check_winner(); // Check if anyone has won or not.
 
-    clr();
+    clr();  // Clear screen.
 }
 
 
 void initialize() {
-    memset(board, ' ', sizeof board);
-    active = true;
-    turn = true;
+    memset(board, ' ', sizeof board); // Clear the board.
+    active = true;  // Game is now activated.
+    turn = true;    // True means player goes first.
 }
 
 void menu() {
-    clr();
+    clr();  // Clear the screen
     printf("\t\t\tTic Tac Toe\n\n");
     printf("Wanna Play?\n\t1. Play\n\t2. Quit\nYour Choice : ");
     int choice;
-    cin >> choice;
+    cin >> choice;  // Take player choice.
     if(choice == 1) {
-        active = true;
-        initialize();
-        clr();
+        active = true;  // Activate the game
+        initialize();   // Initialize the game
+        clr();  // Clear screen
     } else {
-        active = false;
-        runGame = false;
+        active = false; // Deactivate the game
+        runGame = false;// Deactivate the main loop
     }
 
     return;
@@ -134,13 +140,16 @@ void menu() {
 
 
 int main() {
-    initialize();
-    while(runGame) {
+    initialize();   // Initialize the game for the first time
+    while(runGame) {    // Main loop
         menu();
         while(active) {
-            play();
+            play();     // :)
         }
     }
 
     return 0;
 }
+
+
+// gg!
