@@ -114,7 +114,6 @@ Move getBestMove(char board[3][3]) {
             }
         }
     }
-    // printf("Value of best move is : %d\n", bestValue);
 
 
     return bestMove;
@@ -145,3 +144,5 @@ int main() {
 */
 
 // :)
+// :)
+// :')
