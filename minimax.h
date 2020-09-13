@@ -125,7 +125,7 @@ pair<int, int> getAiMove(char board[3][3]) {
 }
 
 /*
-int main() {
+int main() { // for testing
     char board[3][3] = {
         {'O', 'O', 'X'},
         {'X', 'X', 'O'},
@@ -143,6 +143,3 @@ int main() {
 }
 */
 
-// :)
-// :)
-// :')
