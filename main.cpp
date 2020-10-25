@@ -95,6 +95,8 @@ void check_winner() {
     }
     if(noMovesLeft(board)) { // No moves left and nobody won. So this is a Tie state.
         active = false; // Game is now inactive.
+        clr();
+        show_board();
         printf("\t\t\tGAME OVER!\n\t\t\t\tIt's a TIE!\n");
         getchar();
         getchar();
