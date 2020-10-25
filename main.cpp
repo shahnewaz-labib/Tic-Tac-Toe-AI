@@ -14,7 +14,7 @@
 using namespace std;
 
 char board[3][3];
-string playerName;
+// string playerName;
 bool turn = true; // true for HUMAN --> X
                   // false for AI --> O
 bool active = true; // true means game is running.
@@ -73,36 +73,27 @@ void take_input() {
 }
 
 void check_winner() {
+    clr();          // clear the board
+    show_board();   // Show the current state of the game.
     int score = getCurrentScore(board); // evaluating the current state of the game.
     if(score == 10) {
         // Game is over. 10 means AI has won, as AI is the maximizing player.
-        clr();  // Clear screen.
-        show_board();   // Show the current state of the game.
         active = false; // Game is now inactive.
         printf("\t\t\tGAME OVER!\n\t\t\t\tAI WON! You lost!\n");
-        getchar();
-        getchar();
-        return;
     } else if(score == -10) {
         // Game is over. -10 means player has won at this point, as player is the minimizing player.
-        clr();  // Clear screen.
-        show_board();   // Show the current state of the game.
         active = false; // Game is now inactive.
         printf("\t\t\tGAME OVER!\n\t\t\t\tYOU WON! AI lost!\n");
-        getchar();
-        getchar();
-        return;
     }
     if(noMovesLeft(board)) { // No moves left and nobody won. So this is a Tie state.
         active = false; // Game is now inactive.
-        clr();
-        show_board();
         printf("\t\t\tGAME OVER!\n\t\t\t\tIt's a TIE!\n");
-        getchar();
-        getchar();
-        return;
     }
-    
+    if(!active) {
+        cout << "\t\t\tpress ENTER to continue. ";
+        getchar();
+        getchar();
+    }
     return;
 }
 
@@ -149,7 +140,7 @@ int main() {
             play();     // :)
         }
     }
-
+    cout << "\n\t\tHAVE A NICE DAY! :)\n";
     return 0;
 }
 
